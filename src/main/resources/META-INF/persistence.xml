@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+
+    <persistence-unit name="ibankJPATest">
+        <description>For TestNG</description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>forceman.ibank.entity.Client</class>
+        <class>forceman.ibank.entity.Employee</class>
+
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver40" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/ibank;create=true" />
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <property name="javax.persistence.jdbc.password" value="admin" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
+            <property name="show_sql" value="true"/>
+            <!--<property name="hibernate.hbm2ddl.auto" value="update" />-->
+        </properties>
+
+    </persistence-unit>
+</persistence>
