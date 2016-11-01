@@ -1,5 +1,8 @@
 package forceman.ibank.dao;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.PersistenceException;
+import javax.persistence.TransactionRequiredException;
 import java.util.List;
 
 /**
@@ -30,7 +33,8 @@ public interface IEntityDAO <T> {
     /**
      * Удалить сущность
      * @param t Объект сущности
-     * @throws IllegalArgumentException, TransactionRequiredException
+     * @throws IllegalArgumentException Сущность с указанным идентификатором не существует
+     * @throws TransactionRequiredException В случае отсутствия активной транзакции при удалении сущности
      */
     void remove(T t);
 
@@ -39,6 +43,12 @@ public interface IEntityDAO <T> {
      * @return кол-во объектов сущности
      */
     long getCount();
+
+    /**
+     * Удалить все элементыы
+     */
+    void removeAll();
+
 
     /**
      * Получить список объектов сущности
@@ -54,4 +64,13 @@ public interface IEntityDAO <T> {
      * @return Объект сущности
      */
     T update(T t);
+
+    /**
+     * Make an instance managed and persistent.
+     * @param t entity instance
+     * @throws EntityExistsException  - if the entity already exists
+     * @throws PersistenceException may be thrown at flush or commit time
+     *
+     */
+    void persist(T t);
 }

@@ -2,9 +2,7 @@ package forceman.ibank.dao;
 
 import forceman.ibank.entity.Client;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TransactionRequiredException;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,7 +12,14 @@ import java.util.NoSuchElementException;
 public class ClientDAOJpa implements IClientDAO {
     private EntityManager em;
 
+    /**
+     * Конструктор
+     * @param em JPA Entity Manager object
+     * @throws NullPointerException Если Entity Manager не инициализирован
+     */
     public ClientDAOJpa(EntityManager em){
+        if( em == null )
+            throw new NullPointerException("Entity Manager is not initialized");
         this.em = em;
     }
 
@@ -48,7 +53,7 @@ public class ClientDAOJpa implements IClientDAO {
      *
      * @param client Объект сущности
      * @throws IllegalArgumentException Если указанный объект не экземпляр сущности Client или удален из контекста EntityManager
-     * @throws TransactionRequiredException
+     * @c
      */
     @Override
     public void remove(Client client) {
@@ -64,6 +69,14 @@ public class ClientDAOJpa implements IClientDAO {
     @Override
     public long getCount() {
         return em.createNamedQuery(Client.QUERY_COUNT, Long.class).getSingleResult();
+    }
+
+    /**
+     * Удалить все элементыы
+     */
+    @Override
+    public void removeAll() {
+        em.createNamedQuery(Client.QUERY_DELETE_ALL_CLIENTS).executeUpdate();
     }
 
     /**
@@ -85,15 +98,27 @@ public class ClientDAOJpa implements IClientDAO {
      *
      * @param client Объект сущности
      * @return Объект сущности
-     * @throws NoSuchElementException Если объектс сущности с указанным идентификатором не существует
+     * @throws NoSuchElementException Если объект сущности с указанным идентификатором не существует
      */
     @Override
     public Client update(Client client) throws NoSuchElementException {
-        Client cl = getLazy(client.getId());
+        //Client cl = getLazy(client.getId());
+        Client cl = get(client.getId());
         if(cl == null)
             throw new NoSuchElementException("Object of Client entity (id = " + client.getId() + " ) is not exists");
         cl.update(client);
+        return cl;
+     }
 
-        return null;
+    /**
+     * Make an instance managed and persistent.
+     *
+     * @param client entity instance
+     * @throws EntityExistsException - if the entity already exists
+     * @throws PersistenceException  may be thrown at flush or commit time
+     */
+    @Override
+    public void persist(Client client) {
+        em.persist(client);
     }
 }

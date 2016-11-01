@@ -8,11 +8,14 @@ import javax.persistence.*;
 @Entity
 @NamedQueries({
         @NamedQuery(name = Client.QUERY_COUNT, query = "SELECT COUNT(c.id) FROM Client c"),
-        @NamedQuery(name = Client.QUERY_GET_CLIENTS, query = "SELECT c FROM Client c")
+        @NamedQuery(name = Client.QUERY_GET_CLIENTS, query = "SELECT c FROM Client c"),
+        @NamedQuery(name=Client.QUERY_DELETE_ALL_CLIENTS, query="DELETE FROM Client c")
 })
-    public class Client {
+public class Client {
     public static final String QUERY_COUNT="countClients";
     public static final String QUERY_GET_CLIENTS="getClients";
+    public static final String QUERY_DELETE_ALL_CLIENTS="deleteAllClients";
+
     @GeneratedValue
     @Id
     private Long id;

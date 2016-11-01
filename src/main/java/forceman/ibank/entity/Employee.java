@@ -1,16 +1,23 @@
 package forceman.ibank.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by Igor on 20.09.2016.
  */
 
+
+@NamedQueries({
+    @NamedQuery(name=Employee.QUERY_COUNT, query = "SELECT COUNT(e.id) FROM Employee e"),
+        @NamedQuery(name=Employee.QUERY_GET_EMPLOYEES, query="SELECT e FROM Employee e"),
+        @NamedQuery(name=Employee.QUERY_DELETE_ALL_EMPLOYEES, query = "DELETE FROM Employee e")
+})
 @Entity
 public class Employee {
+    public static final String QUERY_COUNT="countEmployees";
+    public static final String QUERY_GET_EMPLOYEES="getEmployees";
+    public static final String QUERY_DELETE_ALL_EMPLOYEES="deleteAllEmployees";
+
     @GeneratedValue
     @Id
     private Integer id;
@@ -63,7 +70,11 @@ public class Employee {
         this.pass = pass;
     }
 
-
-
-
+    public void update(Employee e) throws IllegalArgumentException {
+        if(getId() != e.getId())
+            throw new IllegalArgumentException("Primary keys of objects are not the same");
+        this.fio = e.getFio();
+        this.login = e.getLogin();
+        this.pass = e.getPass();
+    }
 }

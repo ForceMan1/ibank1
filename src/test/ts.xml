@@ -3,7 +3,7 @@
  <suite name="TS_!">
     <test name="jpaTest">
         <classes>
-            <class name="Main"/>
+            <class name="EntityTest"/>
         </classes>
     </test>
 
